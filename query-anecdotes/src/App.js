@@ -3,9 +3,13 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { getAnecdotes, updateAnecdote } from './requests'
+import { NotificationProvider } from './NotifContext'
+import NotificationContext from './NotifContext'
+import { useContext } from 'react'
 
 const App = () => {
   const queryClient = useQueryClient()
+  const { showNotification } = useContext(NotificationContext)
   const updateAnecdoteMutation = useMutation(updateAnecdote, {
     onSuccess: () => {
       queryClient.invalidateQueries('anecdotes')
@@ -31,10 +35,11 @@ const App = () => {
   }
 
   const anecdotes = data
-  
+
   const handleVote = (anecdote) => {
     console.log('vote')
     updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes + 1 }) // Tehtävä 6.22
+    showNotification('VOTE', anecdote.content)
   }
 /*
   const anecdotes = [
