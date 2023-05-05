@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
-import { setAnecdotes } from './reducers/anecdoteReducer'
+import { initializeAnecdotes } from './reducers/anecdoteReducer' // setAnecdotes poistettu
 import { useEffect } from 'react' // Tehtävä 6.14
-import anecdoteService from './services/anecdotes'
+//import anecdoteService from './services/anecdotes'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Filter from './components/Filter'
@@ -11,9 +11,13 @@ const App = () => {
   //Tehtävä 6.14:
   const dispatch = useDispatch()
   useEffect(() => {
+    dispatch(initializeAnecdotes()) 
+  }, [dispatch]) 
+  /*
+  useEffect(() => {
     anecdoteService
       .getAll().then(notes => dispatch(setAnecdotes(notes)))
-  }, [dispatch])
+  }, [dispatch]) */
   return (
     <div>
       <h2>Anecdotes</h2>

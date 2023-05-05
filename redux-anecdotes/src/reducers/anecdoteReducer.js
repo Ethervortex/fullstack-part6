@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import anecdoteService from '../services/anecdotes' // Tehtävä 6.16
 
 /*
 const anecdotesAtStart = [
@@ -26,24 +27,56 @@ const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState: [],
   reducers: {
+    /*
     addAnecdote: (state, action) => {
       const newAnecdote = action.payload
       console.log('New:', newAnecdote)
       state.push(newAnecdote)
-    },
+    }, 
     voteAnecdote: (state, action) => {
       const id = action.payload.id
       const anecdoteToVote = state.find(anecdote => anecdote.id === id)
       anecdoteToVote.votes++
+    },*/
+    appendAnecdote(state, action) {
+      state.push(action.payload)
     },
     // Tehtävä 6.14:
     setAnecdotes(state, action) {
       return action.payload
+    },
+    voteA(state, action) {
+      const id = action.payload.id
+      const anecdoteToVote = state.find(anecdote => anecdote.id === id)
+      anecdoteToVote.votes++
     }
   }
 })
 
-export const { voteAnecdote, addAnecdote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
+export const { appendAnecdote, setAnecdotes, voteA } = anecdoteSlice.actions // addAnecdote, voteAnecdote poistettu
+
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch(setAnecdotes(anecdotes))
+  }
+}
+
+// Tehtävä 6.17
+export const addAnecdote = content => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch(appendAnecdote(newAnecdote))
+  }
+}
+
+export const voteAnecdote = anecdote => {
+  return async dispatch => {
+    const updated = await anecdoteService.update(anecdote)
+    dispatch(voteA(updated))
+  }
+}
+
 export default anecdoteSlice.reducer
 
 /*

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import anecdoteService from '../services/anecdotes'
+//import anecdoteService from '../services/anecdotes'
 
 const AnecdoteList = () => {
   //const anecdotes = useSelector(state => state.notes.sort((a, b) => b.votes - a.votes))
@@ -22,14 +22,16 @@ const AnecdoteList = () => {
     console.log('vote', id)
     // Tehtävä 6.15
     const newVote = { ...anecdote, votes: anecdote.votes + 1 }
-    const updated = await anecdoteService.update(newVote)
-    dispatch(voteAnecdote(updated))
+    dispatch(voteAnecdote(newVote)) // Tehtävä 6
+    dispatch(setNotification(`You voted: "${anecdote.content}"`, 5))
+    //const updated = await anecdoteService.update(newVote)
+    //dispatch(voteAnecdote(updated))
     //dispatch(voteAnecdote({ id }))
+    /*
     dispatch(setNotification(`You voted: "${anecdote.content}"`))
     setTimeout(() => {
       dispatch(setNotification(''))
-    }, 5000)
-    
+    }, 5000) */ 
   }
 
   return (
@@ -40,7 +42,7 @@ const AnecdoteList = () => {
             {anecdote.content}
           </div>
           <div>
-            has {anecdote.votes}
+            has {anecdote.votes} votes {' '}
             <button onClick={() => vote(anecdote.id, anecdote)}>vote</button>
           </div>
         </div>
