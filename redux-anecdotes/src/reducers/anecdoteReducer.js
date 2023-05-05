@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+/*
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -7,37 +8,42 @@ const anecdotesAtStart = [
   'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+] 
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
 const asObject = (anecdote) => {
   return {
     content: anecdote,
-    id: getId(),
+    //id: getId(), // poistettu tehtävässä 6.15
     votes: 0
   }
-}
+} */
 
-const initialState = anecdotesAtStart.map(asObject)
+//const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteSlice = createSlice({
-  name: 'notes',
-  initialState,
+  name: 'anecdotes',
+  initialState: [],
   reducers: {
     addAnecdote: (state, action) => {
-      const newAnecdote = asObject(action.payload)
+      const newAnecdote = action.payload
+      console.log('New:', newAnecdote)
       state.push(newAnecdote)
     },
     voteAnecdote: (state, action) => {
       const id = action.payload.id
       const anecdoteToVote = state.find(anecdote => anecdote.id === id)
       anecdoteToVote.votes++
+    },
+    // Tehtävä 6.14:
+    setAnecdotes(state, action) {
+      return action.payload
     }
   }
 })
 
-export const { voteAnecdote, addAnecdote } = anecdoteSlice.actions
+export const { voteAnecdote, addAnecdote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
 export default anecdoteSlice.reducer
 
 /*

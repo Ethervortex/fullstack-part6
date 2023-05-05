@@ -9,6 +9,7 @@ const Filter = () => {
   const handleChange = (event) => {
     // input-kentän arvo muuttujassa event.target.value
     const content = event.target.value
+    console.log('Filter content:', content)
     dispatch(filterChange(content))
   }
 
